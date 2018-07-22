@@ -78,12 +78,12 @@ public class Map {
 
     public void printMap(){     // DEBUG FEATURE
 
-        for (int x = 0; x < this.x_length; x++){
-            for (int y = 0; y < this.y_length; y++){
+        for (int y = 0; y < this.y_length; y++){
+            for (int x = 0; x < this.x_length; x++){
 
                 char out = 'o';
 
-                Terrain terrain = cells[x][y].getTerrain();
+                Terrain terrain = cells[y][x].getTerrain();
 
                 switch (terrain){
                     case GRASS:

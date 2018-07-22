@@ -30,7 +30,7 @@ public class MapGenerator {
     public Cell[][] generateMap(int x_mapSize, int y_mapSize){
 
         // Create grid of Cell's (2D array)
-        Cell[][] newMap = new Cell[x_mapSize][y_mapSize];
+        Cell[][] newMap = new Cell[y_mapSize][x_mapSize];
 
         // Generate Cell's for the map
         newMap = generateCells(newMap);
@@ -46,8 +46,8 @@ public class MapGenerator {
 
 
         // cycle each Cell (for inner array, index [0] of the outer array is used to get the inner ray and find it's length)
-        for (int x = 0; x < cells.length; x++){
-            for (int y = 0; y < cells[0].length; y++){
+        for (int y = 0; y < cells.length; y++){
+            for (int x = 0; x < cells[0].length; x++){
 
                 /*      v2 Noise Usage          */
                 // Generate noise at specific Cell cords, make positive, enlarge noise by dividing cords (AS DECIMALS)
@@ -58,19 +58,19 @@ public class MapGenerator {
                 // Assign Cell type at cords depending on noise given
                 if (noiseValue <= 0.5){
                     cell.setTerrain(Terrain.GRASS);
-                    cells[x][y] = cell;
+                    cells[y][x] = cell;
                 }
                 else if (noiseValue <= 0.6){
                     cell.setTerrain(Terrain.SAND);
-                    cells[x][y] = cell;
+                    cells[y][x] = cell;
                 }
                 else if (noiseValue <= 1.0){
                     cell.setTerrain(Terrain.WATER);
-                    cells[x][y] = cell;
+                    cells[y][x] = cell;
                 }
                 else {
                     cell.setTerrain(Terrain.OUT);
-                    cells[x][y] = cell;
+                    cells[y][x] = cell;
                 }
 
                 /*      v1 Noise Usage

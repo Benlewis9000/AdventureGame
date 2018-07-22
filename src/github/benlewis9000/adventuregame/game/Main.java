@@ -13,8 +13,7 @@ public class Main {
         //System.out.println(x);
         //System.out.println(String.valueOf(x));
 
-        // Todo: Fix (x, y) orientation
-        Map map = new Map(40, 100);
+        Map map = new Map(120, 20);
         map.printMap();
 
 

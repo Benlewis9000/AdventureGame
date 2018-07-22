@@ -7,7 +7,7 @@ public class Player {
     int x_location;
     int y_location;
 
-    // Health, Item[] items, Item equipped
+    // Todo: Health, Item[] items, Item equipped, armor (head/torso/legs/feet)?
 
     // Todo: Place player in center of map, allow for player movement (seperate move mechanic/methods)
 
