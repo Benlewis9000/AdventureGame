@@ -6,10 +6,9 @@ public class Map {
     private int mapSize;
     private int x_length;
     private int y_length;
+    private int seed;
 
-    /*
-        Getters and Setters
-     */
+
 
     public Cell[][] getCells() {
         return cells;
@@ -27,7 +26,6 @@ public class Map {
         this.mapSize = mapSize;
     }
 
-
     public int getX_length() {
         return x_length;
     }
@@ -44,9 +42,15 @@ public class Map {
         this.y_length = y_length;
     }
 
-    /*
-            Constructor
-    */
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
+
+
 
     // SQUARE map
     public Map (int mapSize){
@@ -54,27 +58,27 @@ public class Map {
         // Create MapGenerator, generate map in accordance to encapsulated mapSize
         MapGenerator mapGenerator = new MapGenerator();
         this.setCells(mapGenerator.generateMap(mapSize));
+        setSeed(mapGenerator.getSeed());
 
         this.setX_length(mapSize);
         this.setY_length(mapSize);
 
     }
 
-    // VARIED map
+    // RECTANGULAR map
     public Map (int x_length, int y_length){
 
         this.setX_length(x_length);
         this.setY_length(y_length);
 
         // Create MapGenerator, generate map in accordance to encapsulated mapSize
-        MapGenerator mapGenerator = new MapGenerator();
+        MapGenerator mapGenerator = new MapGenerator(9688776);
         this.setCells(mapGenerator.generateMap(x_length, y_length));
+        setSeed(mapGenerator.getSeed());
 
     }
 
-    /*
-        Methods
-     */
+
 
     public void printMap(){     // DEBUG FEATURE
 
@@ -96,8 +100,15 @@ public class Map {
                         out = '~';
                         break;
                     case OUT:
-                        out = 3;
+                        out = 'x';
                 }
+
+                if (cells[y][x].getUnit() != null){
+                    if (cells[y][x].getUnit().equals(Unit.PLAYER)){
+                        out = 'O';
+                    }
+                }
+
                 System.out.print(out + " ");
             }
             System.out.println();

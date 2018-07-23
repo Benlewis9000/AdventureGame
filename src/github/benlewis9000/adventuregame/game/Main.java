@@ -6,17 +6,29 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Program running...\n");
+        System.out.println("Program running...");
 
-        //double x = SimplexNoise.noise(10, 8.7);
+        // Generate RECTANGLE map
+        Map map = new Map(100, 20);
+        System.out.println("Seed: " + map.getSeed() + "\n");
 
-        //System.out.println(x);
-        //System.out.println(String.valueOf(x));
+        Player player = new Player(map);
 
-        Map map = new Map(120, 20);
-        map.printMap();
+        player.getMap().printMap();
+
+        System.out.println("Index: (" + player.getX_index() + ", " + player.getY_index() + ")");
+        System.out.println("Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
+
 
 
     }
 
 }
+
+/*
+        Movement:
+            - boolean canMove(), check adjacent cell in direction of movement
+            - ^if true, move(), deleting player Unit from previous cell and adding to new one(?),
+                also check for current unit
+                Should moving be done by fake coords and indexes? a player unit isn't needed?
+ */
