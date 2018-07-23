@@ -84,19 +84,21 @@ public class Player {
         this.setMap(map);
 
         // Set indexes for player on map grid (round to int)
-        this.setX_index(Math.round(map.getX_length() / 2 - 1));
-        this.setY_index(Math.round(map.getY_length() / 2 - 1));
+        this.setX_index(map.getX_Spawn());
+        this.setY_index(map.getY_Spawn());
 
         // Initialise reference cords at (0,0)
-        this.setX_cords(0);
-        this.setY_cords(0);
+        this.setX_cords(this.getX_index() - (map.getX_length()/2 - 1));
+        this.setY_cords(this.getY_index() - (map.getY_length()/2 - 1));
 
         Cell[][] cells = map.getCells();
 
-        //cells[this.getY_index()][this.getX_index()].setUnit(Unit.PLAYER);
+        // Place player at generated spawn points
+        cells[map.getY_Spawn()][map.getX_Spawn()].setUnit(Unit.PLAYER);
+        System.out.println(map.getX_Spawn() + ", " + map.getY_Spawn());
 
-        // Todo: Check for nearest land and alter both cords and index (spiral/rectangles?)
 
+        /*  LAND FINDER v1
         boolean foundLand = false;
 
         // Loop along Y axis
@@ -132,6 +134,7 @@ public class Player {
         }
 
         if (!foundLand) System.out.println("ERROR: Land not found.");
+        */
     }
 
 }

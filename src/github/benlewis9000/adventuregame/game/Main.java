@@ -8,6 +8,8 @@ public class Main {
 
         System.out.println("Program running...");
 
+        //for (int i = 0; i < 5000; i++) {
+
         // Generate RECTANGLE map
         Map map = new Map(100, 20);
         System.out.println("Seed: " + map.getSeed() + "\n");
@@ -19,7 +21,7 @@ public class Main {
         System.out.println("Index: (" + player.getX_index() + ", " + player.getY_index() + ")");
         System.out.println("Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
 
-
+        //}
 
     }
 
