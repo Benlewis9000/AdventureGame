@@ -1,6 +1,7 @@
 package github.benlewis9000.adventuregame.game;
 
 import github.benlewis9000.adventuregame.mapping.Map;
+import github.benlewis9000.adventuregame.mapping.MapGenerator;
 
 public class Main {
 
@@ -8,20 +9,19 @@ public class Main {
 
         System.out.println("Program running...");
 
-        //for (int i = 0; i < 5000; i++) {
-
         // Generate RECTANGLE map
-        Map map = new Map(100, 20);
+        MapGenerator mapGenerator = new MapGenerator();
+        Map map = mapGenerator.generateMap(100, 20, 5657964);
         System.out.println("Seed: " + map.getSeed() + "\n");
 
         Player player = new Player(map);
 
+        System.out.println(
+                "Index: (" + player.getX_index() + ", " + player.getY_index() + ")\n"
+                + "Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
+
         player.getMap().printMap();
 
-        System.out.println("Index: (" + player.getX_index() + ", " + player.getY_index() + ")");
-        System.out.println("Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
-
-        //}
 
     }
 

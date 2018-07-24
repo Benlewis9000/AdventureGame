@@ -5,7 +5,6 @@ import java.util.Random;
 public class Map {
 
     private Cell[][] cells;
-    private int mapSize;
     private int x_length;
     private int y_length;
     private int x_Spawn;
@@ -20,14 +19,6 @@ public class Map {
 
     public void setCells(Cell[][] cells) {
         this.cells = cells;
-    }
-
-    public int getMapSize() {
-        return mapSize;
-    }
-
-    private void setMapSize(int mapSize) {
-        this.mapSize = mapSize;
     }
 
     public int getX_length() {
@@ -72,54 +63,39 @@ public class Map {
 
 
 
-
-    /* Todo: Remove - completely unnecessary
-    // SQUARE map
-    public Map (int mapSize){
-
-        // Create MapGenerator, generate map in accordance to encapsulated mapSize
-        MapGenerator mapGenerator = new MapGenerator();
-        this.setCells(mapGenerator.generateMap(mapSize));
-        setSeed(mapGenerator.getSeed());
-
-        this.setX_length(mapSize);
-        this.setY_length(mapSize);
-
-    }
-    */
-
     // RECTANGULAR map
-    public Map (int x_length, int y_length){
+    public Map (Cell[][] cells, int X_SPAWN, int Y_SPAWN, int seed){
 
-        this.setX_length(x_length);
-        this.setY_length(y_length);
+        setCells(cells);
 
-        // Create MapGenerator, generate map in accordance to encapsulated mapSize
-        MapGenerator mapGenerator = new MapGenerator();
-        this.setCells(mapGenerator.generateMap(x_length, y_length));
+        this.setX_length(cells[0].length);
+        this.setY_length(cells.length);
 
         // Set spawn points for player
-        setX_Spawn(mapGenerator.getX_Spawn());
-        setY_Spawn(mapGenerator.getY_Spawn());
+        setX_Spawn(X_SPAWN);
+        setY_Spawn(Y_SPAWN);
 
-        setSeed(mapGenerator.getSeed());
+        setSeed(seed);
 
     }
 
 
 
-    public void printMap(){     // DEBUG FEATURE
+    public void printMap(){
 
+        // Iterate through each cell
         for (int y = 0; y < this.y_length; y++){
             for (int x = 0; x < this.x_length; x++){
 
-                char out = 'o';
+                char out = 'x';
 
                 Terrain terrain = cells[y][x].getTerrain();
 
+                // Random factor for showing tree's - Todo: Move randomness to terrain generator
                 Random random = new Random();
                 float treeChance = random.nextFloat();
 
+                // Parse terrain types to char's for graphic
                 switch (terrain){
                     case GRASS:
                         out = '#';
@@ -142,6 +118,7 @@ public class Map {
                         break;
                 }
 
+                // Override terrain with player icon - Todo: Apply to all units(?)
                 if (cells[y][x].getUnit() != null){
                     if (cells[y][x].getUnit().equals(Unit.PLAYER)){
                         out = 'O';

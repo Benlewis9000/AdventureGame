@@ -4,20 +4,13 @@ import java.util.Random;
 
 public class MapGenerator {
 
-    // TODO: Swap stack order (creation order) of Map and MapGenerator - generator should come before map!
+    // TODO: Make static?
 
-    private int seed;
     private int x_Spawn;
     private int y_Spawn;
     private double shortestDistance = -1.0;
 
-    public int getSeed() {
-        return seed;
-    }
 
-    public void setSeed(int seed) {
-        this.seed = seed;
-    }
 
     public int getX_Spawn() {
         return x_Spawn;
@@ -35,45 +28,36 @@ public class MapGenerator {
         this.y_Spawn = y_Spawn;
     }
 
-    // Construct generator with RANDOM seed
-    public MapGenerator(){
+
+
+    // RANDOM map
+    public Map generateMap(int x_mapSize, int y_mapSize){
+
         Random random = new Random();
-        this.setSeed(random.nextInt(10000000));
+        int seed = (random.nextInt(10000000));
+
+        Cell[][] cells = generateCells(x_mapSize, y_mapSize, seed);
+
+        return new Map(cells, getX_Spawn(), getY_Spawn(), seed);
 
     }
 
-    // Construct generator with DEFINED seed
-    public MapGenerator(int seed){
-        this.setSeed(seed);     // Seed: 6461964 is a cool seed (y>200)
-    }
+    // SEEDED map
+    public Map generateMap(int x_mapSize, int y_mapSize, int seed){
 
+        Cell[][] cells = generateCells(x_mapSize, y_mapSize, seed);
 
-
-    public Cell[][] generateMap(int mapSize){
-
-        // Create grid of Cell's (2D array)
-        Cell[][] newMap = new Cell[mapSize][mapSize];
-
-        // Generate Cell's for the map, and return
-        return generateCells(newMap);
-
-    }
-
-    public Cell[][] generateMap(int x_mapSize, int y_mapSize){
-
-        // Create grid of Cell's (2D array)
-        Cell[][] newMap = new Cell[y_mapSize][x_mapSize];
-
-        // Generate Cell's for the map
-        newMap = generateCells(newMap);
-
-        return newMap;
+        return new Map(cells, getX_Spawn(), getY_Spawn(), seed);
 
     }
 
     // Todo: Put land finding algorithm in this loop so it only runs over each cell once
 
-    public Cell[][] generateCells(Cell[][] cells){
+    public Cell[][] generateCells(int x_mapSize, int y_mapSize, int seed){
+
+        Cell[][] cells = new Cell[y_mapSize][x_mapSize];
+
+        double shortestDistance = -1.0;
 
         // cycle each Cell (for inner array, index [0] of the outer array is used to get the inner ray and find it's length)
         for (int y = 0; y < cells.length; y++){
@@ -83,7 +67,7 @@ public class MapGenerator {
                 cells[y][x] = new Cell();
 
                 // Generate Terrain for cell (according to noise value)
-                cells[y][x].setTerrain(generateTerrain(x, y));
+                cells[y][x].setTerrain(generateTerrain(x, y, seed));
 
                 // Find spawn point
                 // Find spawn point
@@ -99,7 +83,7 @@ public class MapGenerator {
         return cells;
     }
 
-    public Terrain generateTerrain(int x, int y){
+    public Terrain generateTerrain(int x, int y, int seed){
 
         /*      v3 Noise Usage          */
         // Generate noise at specific Cell cords, make positive, enlarge noise by dividing cords (AS DECIMALS)
