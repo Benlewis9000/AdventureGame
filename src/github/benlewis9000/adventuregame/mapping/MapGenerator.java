@@ -57,8 +57,6 @@ public class MapGenerator {
 
         Cell[][] cells = new Cell[y_mapSize][x_mapSize];
 
-        double shortestDistance = -1.0;
-
         // cycle each Cell (for inner array, index [0] of the outer array is used to get the inner ray and find it's length)
         for (int y = 0; y < cells.length; y++){
             for (int x = 0; x < cells[0].length; x++){

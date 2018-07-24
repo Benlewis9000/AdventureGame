@@ -95,46 +95,7 @@ public class Player {
 
         // Place player at generated spawn points
         cells[map.getY_Spawn()][map.getX_Spawn()].setUnit(Unit.PLAYER);
-        System.out.println(map.getX_Spawn() + ", " + map.getY_Spawn());
 
-
-        /*  LAND FINDER v1
-        boolean foundLand = false;
-
-        // Loop along Y axis
-        for (int y = this.getY_index(); y < this.getMap().getY_length(); y++) {
-            // If end of Y or landFound, exit
-            if (y == this.getMap().getY_length() || foundLand) break;
-            // Loop along X axis at Y level
-            for (int x = this.getX_index(); x < this.getMap().getX_length(); x++) {
-                // If X is maxed, break (todo: is this needed?)
-                if (x == this.getMap().getX_length()) break;
-                else {
-                    if (!(this.getMap().getCells()[y][x].getTerrain().equals(Terrain.WATER))) {
-
-                        int ogX = this.getX_index();
-                        int ogY = this.getY_index();
-
-                        // Calculate offset of trial index to original index, use for player cords (0,0) -> (x_off, y_off)
-                        int x_offset = x - ogX;
-                        int y_offset = y - ogY;
-                        this.setX_cords(x_offset);
-                        this.setY_cords(y_offset);
-
-                        // Place player here
-                        this.setX_index(x);
-                        this.setY_index(y);
-                        cells[this.getY_index()][this.getX_index()].setUnit(Unit.PLAYER);
-
-                        foundLand = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!foundLand) System.out.println("ERROR: Land not found.");
-        */
     }
 
 }
