@@ -1,6 +1,8 @@
 package github.benlewis9000.adventuregame.player;
 
+import github.benlewis9000.adventuregame.entity.Misc;
 import github.benlewis9000.adventuregame.game.Direction;
+import github.benlewis9000.adventuregame.game.Inventory;
 import github.benlewis9000.adventuregame.mapping.Cell;
 import github.benlewis9000.adventuregame.mapping.Map;
 import github.benlewis9000.adventuregame.mapping.Terrain;
@@ -9,6 +11,7 @@ import github.benlewis9000.adventuregame.mapping.Unit;
 public class Player {
 
     Map map;
+    Inventory inventory;
 
     int maxHealth;
     int health;
@@ -27,6 +30,14 @@ public class Player {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = this.inventory;
     }
 
     public int getMaxHealth() {
@@ -86,6 +97,14 @@ public class Player {
 
         // Set map to given Map
         this.setMap(map);
+
+        // Create and set Inventory
+        Inventory inventory = new Inventory();
+        this.setInventory(inventory);
+
+        this.getInventory().addItem(Misc.BOAT);
+
+        if (this.getInventory().containsItem(Misc.BOAT)) System.out.println("You have " + this.getInventory().getItems().get(Misc.BOAT) + " boat.");
 
         // Set indexes for player on map grid (round to int)
         this.setX_index(map.getX_Spawn());
