@@ -116,6 +116,9 @@ public class Map {
                             out = '#';
                         } else out = '#';
                         break;
+                    case ISLAND:
+                        out = '#';
+                        break;
                 }
 
                 // Override terrain with player icon - Todo: Apply to all units(?)

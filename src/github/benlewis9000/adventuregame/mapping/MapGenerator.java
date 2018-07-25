@@ -68,9 +68,8 @@ public class MapGenerator {
                 cells[y][x].setTerrain(generateTerrain(x, y, seed));
 
                 // Find spawn point
-                // Find spawn point
                 double distance = findDistance(x, y, cells[0].length/2 - 1, cells.length/2 - 1);
-                if ((shortestDistance == -1.0 || distance < this.shortestDistance) && !(cells[y][x].getTerrain().equals(Terrain.WATER))){
+                if ((shortestDistance == -1.0 || distance < this.shortestDistance) && (cells[y][x].getTerrain().equals(Terrain.GRASS))){
                     shortestDistance = distance;
                     setX_Spawn(x);
                     setY_Spawn(y);
@@ -88,13 +87,13 @@ public class MapGenerator {
         double noiseValue = Math.abs(SimplexNoise.noise((float) (x) / 16, (float) (y) / 16, seed));  // <- dividing cords enlarges grid - MUST BE A DECIMAL DATATYPE!
 
         // Return Terrain type at cords depending on noise given
-        if (noiseValue <= 0.1){
+        /*if (noiseValue <= 0.1){
             return Terrain.LIGHT_FOREST;
         }
         else if (noiseValue <= 0.15){
             return Terrain.LIGHT_FOREST;
         }
-        else if (noiseValue <= 0.5){
+        else */ if (noiseValue <= 0.5){
             return Terrain.GRASS;
         }
         else if (noiseValue <= 0.6){
@@ -107,7 +106,7 @@ public class MapGenerator {
             return Terrain.SAND;
         }
         else {
-            return Terrain.GRASS;
+            return Terrain.ISLAND;
         }
     }
 

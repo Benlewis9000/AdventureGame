@@ -9,7 +9,7 @@ public class Cell {
      */
 
     Terrain terrain;
-    Unit unit;
+    Unit unit;          // todo arraylist of Unit's(?) - to handle player
 
     public Terrain getTerrain() {
         return terrain;
@@ -26,4 +26,6 @@ public class Cell {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    // Todo: 'spawnable' boolean instead of checking terrain when finding spawn? Assigned with terrain generator
 }
