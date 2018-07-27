@@ -1,5 +1,6 @@
 package github.benlewis9000.adventuregame.game;
 
+import github.benlewis9000.adventuregame.mapping.Direction;
 import github.benlewis9000.adventuregame.mapping.Map;
 import github.benlewis9000.adventuregame.player.Player;
 
@@ -53,6 +54,9 @@ public class Game {
 
             String input = scanner.nextLine();
 
+            CommandHandler.onCommand(getPlayer(), Utilities.stringToArgs(input));
+
+            /* Todo: Move to CommandHandler
             switch (input){
                 case "w":
                     player.walk(Direction.NORTH);
@@ -70,6 +74,7 @@ public class Game {
                     map.printMap();
 
             }
+            */
 
         }
 

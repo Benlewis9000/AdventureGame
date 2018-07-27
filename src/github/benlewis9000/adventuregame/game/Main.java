@@ -23,7 +23,7 @@ public class Main {
                 "Index: (" + player.getX_index() + ", " + player.getY_index() + ")\n"
                 + "Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
 
-        player.getMap().printMap();
+        //player.getMap().printMap();
 
         Game game = new Game(player);
         game.runGame();

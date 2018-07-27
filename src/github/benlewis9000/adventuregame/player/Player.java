@@ -1,7 +1,9 @@
 package github.benlewis9000.adventuregame.player;
 
 import github.benlewis9000.adventuregame.entity.Misc;
-import github.benlewis9000.adventuregame.game.Direction;
+import github.benlewis9000.adventuregame.entity.Potion;
+import github.benlewis9000.adventuregame.entity.Weapon;
+import github.benlewis9000.adventuregame.mapping.Direction;
 import github.benlewis9000.adventuregame.game.Inventory;
 import github.benlewis9000.adventuregame.mapping.Cell;
 import github.benlewis9000.adventuregame.mapping.Map;
@@ -37,7 +39,7 @@ public class Player {
     }
 
     public void setInventory(Inventory inventory) {
-        this.inventory = this.inventory;
+        this.inventory = inventory;
     }
 
     public int getMaxHealth() {
@@ -102,9 +104,25 @@ public class Player {
         Inventory inventory = new Inventory();
         this.setInventory(inventory);
 
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+
+        this.getInventory().addItem(Misc.BOAT);
+        this.getInventory().addItem(Misc.BOAT);
         this.getInventory().addItem(Misc.BOAT);
 
+        this.getInventory().addItem(Weapon.BATTLE_AXE);
+
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+        this.getInventory().addItem(Potion.HEALTH_POTION);
+
+
         if (this.getInventory().containsItem(Misc.BOAT)) System.out.println("You have " + this.getInventory().getItems().get(Misc.BOAT) + " boat.");
+        if (this.getInventory().containsItem(Weapon.BATTLE_AXE)) System.out.println("You have " + this.getInventory().getItems().get(Weapon.BATTLE_AXE) + " battle axe.\n");
 
         // Set indexes for player on map grid (round to int)
         this.setX_index(map.getX_Spawn());
