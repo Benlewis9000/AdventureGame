@@ -1,5 +1,8 @@
 package github.benlewis9000.adventuregame.mapping;
 
+import github.benlewis9000.adventuregame.entity.Entity;
+import github.benlewis9000.adventuregame.player.Player;
+
 import java.util.Random;
 
 public class Map {
@@ -98,7 +101,7 @@ public class Map {
                 // Parse terrain types to char's for graphic
                 switch (terrain){
                     case GRASS:
-                        out = '#';
+                        out = '%';
                         break;
                     case SAND:
                         out = ':';
@@ -107,29 +110,33 @@ public class Map {
                         out = '~';
                         break;
                     case LIGHT_FOREST:
-                        if (treeChance > 0.6){
-                            out = '#';
-                        } else out = '#';
+                        if (treeChance < 0.8){
+                            out = '%';
+                        } else out = '%';
                         break;
                     case DENSE_FOREST:
-                        if (treeChance > 0.2){
-                            out = '#';
-                        } else out = '#';
+                        if (treeChance < 1.0){
+                            out = '%';
+                        } else out = '%';
                         break;
                     case ISLAND:
-                        out = '#';
+                        out = '%';
                         break;
                 }
 
                 // Override terrain with player icon - Todo: Apply to all units(?)
-                if (cells[y][x].getUnit() != null){
-                    if (cells[y][x].getUnit().equals(Unit.PLAYER)){
+                Player p;
+
+                // Iterate through entities
+                for (Entity entity : cells[y][x].getEntities()){
+                    if (entity instanceof Player){
                         out = 'O';
                     }
                 }
 
                 System.out.print(out + " ");
             }
+
             System.out.println();
         }
 

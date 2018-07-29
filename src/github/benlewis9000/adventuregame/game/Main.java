@@ -8,13 +8,15 @@ import java.io.*;
 
 public class Main {
 
+    public static final boolean debug = false;
+
     public static void main(String[] args) {
 
         System.out.println("Program running...");
 
         // Generate RECTANGLE map
         MapGenerator mapGenerator = new MapGenerator();
-        Map map = mapGenerator.generateMap(100, 20);
+        Map map = mapGenerator.generateMap(40, 40 );
         System.out.println("Seed: " + map.getSeed() + "\n");
 
         Player player = new Player(map);

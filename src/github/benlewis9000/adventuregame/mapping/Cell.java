@@ -1,5 +1,12 @@
 package github.benlewis9000.adventuregame.mapping;
 
+import github.benlewis9000.adventuregame.entity.Entity;
+import github.benlewis9000.adventuregame.entity.Item;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Cell {
 
     /**
@@ -9,7 +16,7 @@ public class Cell {
      */
 
     Terrain terrain;
-    Unit unit;          // todo arraylist of Unit's(?) - to handle player
+    HashSet<Entity> entities;
 
     public Terrain getTerrain() {
         return terrain;
@@ -19,13 +26,12 @@ public class Cell {
         this.terrain = terrain;
     }
 
-    public Unit getUnit() {
-        return unit;
+    public HashSet<Entity> getEntities() {
+        return entities;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public void setEntities(HashSet<Entity> entities) {
+        this.entities = entities;
     }
 
-    // Todo: 'spawnable' boolean instead of checking terrain when finding spawn? Assigned with terrain generator
 }

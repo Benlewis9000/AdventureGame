@@ -1,5 +1,6 @@
 package github.benlewis9000.adventuregame.game;
 
+import github.benlewis9000.adventuregame.mapping.Direction;
 import github.benlewis9000.adventuregame.player.Player;
 
 public class CommandHandler {
@@ -38,6 +39,23 @@ public class CommandHandler {
         // Take first arg
         switch (args[0]) {
 
+            case "w":
+                player.walk(Direction.NORTH);
+                break;
+            case "a":
+                player.walk(Direction.WEST);
+                break;
+            case "s":
+                player.walk(Direction.SOUTH);
+                break;
+            case "d":
+                player.walk(Direction.EAST);
+                break;
+
+            case "map":
+                player.getMap().printMap();
+                break;
+
             case "inventory":
 
                 if (args.length >= 2) {
@@ -51,9 +69,9 @@ public class CommandHandler {
                             System.out.println("Sorry, that command doesn't exist! Type \"help\" for a list of commands");
                             break;
 
-
                     }
                 }
+
                 else System.out.println("What would you like do? (Type the desired command as showed)\n" +
                         "\"inventory view\"\n" +
                         "- View items in your inventory");

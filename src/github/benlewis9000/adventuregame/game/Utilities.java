@@ -41,4 +41,10 @@ public class Utilities {
         return args;
     }
 
+    public static void debug(String string){
+        if (Main.debug){
+            System.out.println(string);
+        }
+    }
+
 }

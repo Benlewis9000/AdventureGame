@@ -1,6 +1,9 @@
 package github.benlewis9000.adventuregame.mapping;
 
-import java.util.Random;
+import github.benlewis9000.adventuregame.entity.*;
+import github.benlewis9000.adventuregame.game.Utilities;
+
+import java.util.*;
 
 public class MapGenerator {
 
@@ -8,6 +11,7 @@ public class MapGenerator {
 
     private int x_Spawn;
     private int y_Spawn;
+    private int seed;
     private double shortestDistance = -1.0;
 
 
@@ -28,13 +32,21 @@ public class MapGenerator {
         this.y_Spawn = y_Spawn;
     }
 
+    public int getSeed() {
+        return seed;
+    }
 
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
 
     // RANDOM map
     public Map generateMap(int x_mapSize, int y_mapSize){
 
+        // Generate seed for map
         Random random = new Random();
         int seed = (random.nextInt(10000000));
+        this.setSeed(seed);
 
         Cell[][] cells = generateCells(x_mapSize, y_mapSize, seed);
 
@@ -45,17 +57,27 @@ public class MapGenerator {
     // SEEDED map
     public Map generateMap(int x_mapSize, int y_mapSize, int seed){
 
+        this.setSeed(seed);
+
         Cell[][] cells = generateCells(x_mapSize, y_mapSize, seed);
 
         return new Map(cells, getX_Spawn(), getY_Spawn(), seed);
 
     }
 
-    // Todo: Put land finding algorithm in this loop so it only runs over each cell once
+
 
     public Cell[][] generateCells(int x_mapSize, int y_mapSize, int seed){
 
+        // New 2D array of cells (each holding Terrain, HashSet<Entity>)
         Cell[][] cells = new Cell[y_mapSize][x_mapSize];
+
+        // Random object in relation to seed
+        /*
+            Random(seed) always generates same set of seeds for each cell,
+            but each cell will generate different probabilities for Entities
+         */
+        Random random = new Random(seed);
 
         // cycle each Cell (for inner array, index [0] of the outer array is used to get the inner ray and find it's length)
         for (int y = 0; y < cells.length; y++){
@@ -64,8 +86,12 @@ public class MapGenerator {
                 // Create new cell at (x, y)
                 cells[y][x] = new Cell();
 
+                // Randomising number (in correlation to seed)
+                random.nextInt(Integer.MAX_VALUE);
+
                 // Generate Terrain for cell (according to noise value)
                 cells[y][x].setTerrain(generateTerrain(x, y, seed));
+                cells[y][x].setEntities(generateEntities(cells[y][x].getTerrain(), getSeed(), random.nextInt(Integer.MAX_VALUE)));
 
                 // Find spawn point
                 double distance = findDistance(x, y, cells[0].length/2 - 1, cells.length/2 - 1);
@@ -87,13 +113,13 @@ public class MapGenerator {
         double noiseValue = Math.abs(SimplexNoise.noise((float) (x) / 16, (float) (y) / 16, seed));  // <- dividing cords enlarges grid - MUST BE A DECIMAL DATATYPE!
 
         // Return Terrain type at cords depending on noise given
-        /*if (noiseValue <= 0.1){
+        if (noiseValue <= 0.09){
+            return Terrain.DENSE_FOREST;
+        }
+        else if (noiseValue <= 0.1){
             return Terrain.LIGHT_FOREST;
         }
-        else if (noiseValue <= 0.15){
-            return Terrain.LIGHT_FOREST;
-        }
-        else */ if (noiseValue <= 0.5){
+        else if (noiseValue <= 0.5){
             return Terrain.GRASS;
         }
         else if (noiseValue <= 0.6){
@@ -108,6 +134,74 @@ public class MapGenerator {
         else {
             return Terrain.ISLAND;
         }
+    }
+
+    public HashSet<Entity> generateEntities (Terrain terrain, int seed, int randomiser){
+
+        HashSet<Entity> entities = new HashSet<Entity>();
+
+        Random random = new Random(randomiser);
+
+        float hasBoat = random.nextFloat();
+        float hasWeapon = random.nextFloat();
+        float hasPotion = random.nextFloat();
+
+        float weaponType = random.nextFloat();
+        float potionType = random.nextFloat();
+
+        if(terrain.equals(Terrain.SAND)){
+            if (hasBoat <= 0.1f) entities.add(Misc.BOAT);
+        }
+
+        // Check for land
+        if(!terrain.equals(Terrain.WATER)){
+
+            Utilities.debug("#not water");
+
+            // Place Weapon
+            if (hasWeapon <= 0.05f){
+
+                Utilities.debug("   #has weapon");
+
+                // Select Weapon type
+                if (weaponType <= 0.4f){
+                    Utilities.debug("       #dagger");
+                    entities.add(Weapon.DAGGER);
+                }
+                else if (weaponType <= 0.7f){
+                    Utilities.debug("       #sword");
+                    entities.add(Weapon.SWORD);
+                }
+                else if (weaponType <= 0.9f){
+                    Utilities.debug("       #battle axe");
+                    entities.add(Weapon.BATTLE_AXE);
+                }
+                else if (weaponType <= 1.0f){
+                    Utilities.debug("       #war hammer");
+                    entities.add(Weapon.WAR_HAMMER);
+                }
+
+            }
+
+            // Place Potion
+            if (hasPotion <= 0.10f){ // Todo: Increase as more potions are added
+
+                Utilities.debug("   #has potion");
+
+                // Select Potion
+                if (potionType <= 0.6f){
+                    Utilities.debug("       #health potion");
+                    entities.add(Potion.HEALTH_POTION);
+                }
+                else if (potionType <= 1.0f){
+                    Utilities.debug("       #strength potion");
+                    entities.add(Potion.SRENGTH_POTION);
+                }
+
+            }
+        }
+
+        return entities;
     }
 
     public double findDistance(int x_Cell, int y_Cell, int x_Center, int y_Center){

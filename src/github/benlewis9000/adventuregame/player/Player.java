@@ -1,16 +1,17 @@
 package github.benlewis9000.adventuregame.player;
 
+import github.benlewis9000.adventuregame.entity.Entity;
 import github.benlewis9000.adventuregame.entity.Misc;
 import github.benlewis9000.adventuregame.entity.Potion;
 import github.benlewis9000.adventuregame.entity.Weapon;
+import github.benlewis9000.adventuregame.game.EventHandler;
 import github.benlewis9000.adventuregame.mapping.Direction;
 import github.benlewis9000.adventuregame.game.Inventory;
 import github.benlewis9000.adventuregame.mapping.Cell;
 import github.benlewis9000.adventuregame.mapping.Map;
 import github.benlewis9000.adventuregame.mapping.Terrain;
-import github.benlewis9000.adventuregame.mapping.Unit;
 
-public class Player {
+public class Player implements Entity {
 
     Map map;
     Inventory inventory;
@@ -23,6 +24,9 @@ public class Player {
 
     int x_cords; // Location in relation to fake origin
     int y_cords;
+
+    Weapon weapon;
+    // Todo: Armour armour; (?)
 
 
 
@@ -104,25 +108,28 @@ public class Player {
         Inventory inventory = new Inventory();
         this.setInventory(inventory);
 
-        this.getInventory().addItem(Potion.HEALTH_POTION);
+            // DEBUG test items
+            /*
+            this.getInventory().addItem(Potion.HEALTH_POTION);
 
-        this.getInventory().addItem(Misc.BOAT);
-        this.getInventory().addItem(Misc.BOAT);
-        this.getInventory().addItem(Misc.BOAT);
+            this.getInventory().addItem(Misc.BOAT);
+            this.getInventory().addItem(Misc.BOAT);
+            this.getInventory().addItem(Misc.BOAT);
 
-        this.getInventory().addItem(Weapon.BATTLE_AXE);
+            this.getInventory().addItem(Weapon.BATTLE_AXE);
 
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
-        this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
+            this.getInventory().addItem(Potion.HEALTH_POTION);
 
+            if (this.getInventory().containsItem(Misc.BOAT)) System.out.println("You have " + this.getInventory().getItems().get(Misc.BOAT) + " boat.");
+            if (this.getInventory().containsItem(Weapon.BATTLE_AXE)) System.out.println("You have " + this.getInventory().getItems().get(Weapon.BATTLE_AXE) + " battle axe.\n");
 
-        if (this.getInventory().containsItem(Misc.BOAT)) System.out.println("You have " + this.getInventory().getItems().get(Misc.BOAT) + " boat.");
-        if (this.getInventory().containsItem(Weapon.BATTLE_AXE)) System.out.println("You have " + this.getInventory().getItems().get(Weapon.BATTLE_AXE) + " battle axe.\n");
+        */
 
         // Set indexes for player on map grid (round to int)
         this.setX_index(map.getX_Spawn());
@@ -134,8 +141,8 @@ public class Player {
 
         Cell[][] cells = map.getCells();
 
-        // Place player at generated spawn points
-        cells[map.getY_Spawn()][map.getX_Spawn()].setUnit(Unit.PLAYER);
+        // Add Player entity to Cell at spawn indexes
+        cells[map.getY_Spawn()][map.getX_Spawn()].getEntities().add(this);
 
     }
 
@@ -182,15 +189,21 @@ public class Player {
 
     private boolean canMove(int x, int y) {
 
+        // If player reaches map boundary...
         if (!(getX_index() + x >= 0 && getX_index() + x <= this.getMap().getX_length() - 1
                 && getY_index() + y >= 0 && getY_index() + y <= this.getMap().getY_length() - 1)){
             System.out.println("You have reached the map boundary!");
             return false;
         }
+
         if (getMap().getCells()[getY_index() + y][getX_index() + x].getTerrain().equals(Terrain.WATER)){
-            // if (player.hasBoat) true;
-            System.out.println("You need a boat to cross water!");
-            return false;
+
+            // If player does NOT have boat...
+            if(! getInventory().getItems().containsKey(Misc.BOAT)){
+                System.out.println("You need a boat to cross water!");
+                return false;
+            }
+            else return true;
         }
 
         return true;
@@ -200,16 +213,23 @@ public class Player {
 
         Cell[][] cells = this.getMap().getCells();
 
-        cells[getY_index()][getX_index()].setUnit(Unit.EMPTY);
+        // Remove Player from original cell
+        cells[getY_index()][getX_index()].getEntities().remove(this);
 
+        // Call EventHandler on entities in new Cell
+        for (Entity entity : cells[getY_index() + y][getX_index() + x].getEntities()){
+            EventHandler.onEntityCollision(entity, this);
+        }
+
+        // SET NEW INDEXES
         // Move index
         this.setX_index(getX_index() + x);
-        this.setY_index(getY_index() + (y));
+        this.setY_index(getY_index() + y);
         // Move cords
         this.setX_cords(getX_cords() + x);
         this.setY_cords(getY_cords() + (y * -1)); // Correct Y orientation for cords
 
-        cells[getY_index()][getX_index()].setUnit(Unit.PLAYER);
+        cells[getY_index()][getX_index()].getEntities().add(this);
 
         System.out.println("You have moved to (" + getX_cords() + ", " + getY_cords() + ").");
 

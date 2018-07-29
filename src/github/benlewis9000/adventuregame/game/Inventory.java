@@ -1,6 +1,7 @@
 package github.benlewis9000.adventuregame.game;
 
 import github.benlewis9000.adventuregame.entity.Item;
+import github.benlewis9000.adventuregame.entity.Weapon;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class Inventory {
     public void addItem(Item item){
 
         // Add item, or increase quantity of item in inventory
-        if (this.containsItem(item)){
+        if (this.containsItem(item) && (!(item instanceof Weapon)) ){
             int quantity = getItems().get(item);
             getItems().put(item, quantity + 1);
         }

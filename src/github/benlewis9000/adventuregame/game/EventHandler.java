@@ -1,8 +1,13 @@
 package github.benlewis9000.adventuregame.game;
 
-import github.benlewis9000.adventuregame.entity.Weapon;
-import github.benlewis9000.adventuregame.mapping.Unit;
+import github.benlewis9000.adventuregame.entity.*;
+import github.benlewis9000.adventuregame.mapping.Terrain;
 import github.benlewis9000.adventuregame.player.Player;
+
+import static github.benlewis9000.adventuregame.entity.Weapon.DAGGER;
+import static github.benlewis9000.adventuregame.entity.Weapon.SWORD;
+import static github.benlewis9000.adventuregame.entity.Weapon.BATTLE_AXE;
+import static github.benlewis9000.adventuregame.entity.Weapon.WAR_HAMMER;
 
 public class EventHandler {
 
@@ -12,66 +17,111 @@ public class EventHandler {
 
      */
 
-    public static void onCollision(Unit unit, Player player){
+    public static void onEntityCollision(Entity entity, Player player){
 
         Inventory inv = player.getInventory();
 
-        // Check what Unit was collided with
-        switch (unit){
+        /*   ITEMS   */
+        if (entity instanceof Item){
 
-            case DAGGER:
+            /*   WEAPONS    */
+            if (entity instanceof Weapon) {
 
-                System.out.println("You've found a dagger! "  /* + Weapon.DAGGER // get desc method? */);
+                // Check what Weapon was collided with
+                switch ((Weapon) entity) {
 
-                if (inv.containsItem(Weapon.DAGGER)){
-                    System.out.println("You already have this weapon.");
-                } else {
-                    inv.addItem(Weapon.DAGGER);
-                    System.out.println("The dagger has been added to your inventory.");
+                    case DAGGER:
+
+                        System.out.println("You've found a dagger! "  /* + Weapon.DAGGER // get desc method? */);
+
+                        if (inv.containsItem(DAGGER)) {
+                            System.out.println("You already have this weapon.");
+                        } else {
+                            inv.addItem(DAGGER);
+                            System.out.println("The dagger has been added to your inventory.");
+                        }
+                        break;
+
+                    case SWORD:
+
+                        System.out.println("You've found a sword! "  /* + Weapon.DAGGER // get desc method? */);
+
+                        if (inv.containsItem(SWORD)) {
+                            System.out.println("You already have this weapon.");
+                        } else {
+                            inv.addItem(SWORD);
+                            System.out.println("The sword has been added to your inventory.");
+                        }
+                        break;
+
+                    case BATTLE_AXE:
+
+                        System.out.println("You've found a battle axe! "  /* + Weapon.DAGGER // get desc method? */);
+
+                        if (inv.containsItem(BATTLE_AXE)) {
+                            System.out.println("You already have this weapon.");
+                        } else {
+                            inv.addItem(BATTLE_AXE);
+                            System.out.println("The battle axe has been added to your inventory.");
+                        }
+                        break;
+
+                    case WAR_HAMMER:
+
+                        System.out.println("You've found a war hammer! "  /* + Weapon.DAGGER // get desc method? */);
+
+                        if (inv.containsItem(WAR_HAMMER)) {
+                            System.out.println("You already have this weapon.");
+                        } else {
+                            inv.addItem(WAR_HAMMER);
+                            System.out.println("The war hammer has been added to your inventory.");
+                        }
+                        break;
                 }
-                break;
+            }
 
-            case SWORD:
+            player.setInventory(inv);
+        }
 
-                System.out.println("You've found a sword! "  /* + Weapon.DAGGER // get desc method? */);
+        /*   ENEMY     */
 
-                if (inv.containsItem(Weapon.DAGGER)){
-                    System.out.println("You already have this weapon.");
-                } else {
-                    inv.addItem(Weapon.DAGGER);
-                    System.out.println("The sword has been added to your inventory.");
-                }
-                break;
+        if (entity instanceof Monster){
 
-            case BATTLE_AXE:
-
-                System.out.println("You've found a battle axe! "  /* + Weapon.DAGGER // get desc method? */);
-
-                if (inv.containsItem(Weapon.DAGGER)){
-                    System.out.println("You already have this weapon.");
-                } else {
-                    inv.addItem(Weapon.DAGGER);
-                    System.out.println("The battle axe has been added to your inventory.");
-                }
-                break;
-
-            case WAR_HAMMER:
-
-                System.out.println("You've found a war hammer! "  /* + Weapon.DAGGER // get desc method? */);
-
-                if (inv.containsItem(Weapon.DAGGER)){
-                    System.out.println("You already have this weapon.");
-                } else {
-                    inv.addItem(Weapon.DAGGER);
-                    System.out.println("The war hammer has been added to your inventory.");
-                }
-                break;
-
+            // Todo: begin Battle
 
         }
 
-        player.setInventory(inv);
+    }
+
+    public static void onMonsterDeath(Player player, Monster monster){
+
+        Inventory inv = player.getInventory();
+
+        for (Resource resource : monster.getDrops()){
+
+        }
 
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
