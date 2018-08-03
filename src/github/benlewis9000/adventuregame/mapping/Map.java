@@ -2,6 +2,7 @@ package github.benlewis9000.adventuregame.mapping;
 
 import github.benlewis9000.adventuregame.entity.Entity;
 import github.benlewis9000.adventuregame.player.Player;
+import github.benlewis9000.adventuregame.player.PlayerState;
 
 import java.util.Random;
 
@@ -130,7 +131,7 @@ public class Map {
                 // Iterate through entities
                 for (Entity entity : cells[y][x].getEntities()){
                     if (entity instanceof Player){
-                        out = 'O';
+                        out = (((Player) entity).getState() == PlayerState.DEAD) ? 'X' : 'O';
                     }
                 }
 

@@ -1,6 +1,7 @@
 package github.benlewis9000.adventuregame.mapping;
 
 import github.benlewis9000.adventuregame.entity.*;
+import github.benlewis9000.adventuregame.game.Main;
 import github.benlewis9000.adventuregame.game.Utilities;
 
 import java.util.*;
@@ -91,7 +92,7 @@ public class MapGenerator {
 
                 // Generate Terrain for cell (according to noise value)
                 cells[y][x].setTerrain(generateTerrain(x, y, seed));
-                cells[y][x].setEntities(generateEntities(cells[y][x].getTerrain(), getSeed(), random.nextInt(Integer.MAX_VALUE)));
+                cells[y][x].setEntities(generateEntities(cells[y][x].getTerrain(), getSeed(), random.nextInt(Integer.MAX_VALUE), x, y));
 
                 // Find spawn point
                 double distance = findDistance(x, y, cells[0].length/2 - 1, cells.length/2 - 1);
@@ -136,29 +137,39 @@ public class MapGenerator {
         }
     }
 
-    public HashSet<Entity> generateEntities (Terrain terrain, int seed, int randomiser){
+    public HashSet<Entity> generateEntities (Terrain terrain, int seed, int randomiser, int x, int y){
 
         HashSet<Entity> entities = new HashSet<Entity>();
 
-        Random random = new Random(randomiser);
+        // Declare Random, assign to seeded or unseed Random() depending on Settings
+        Random random;
+        if (Main.seedEntities) {
+            random = new Random(randomiser);
+        } else {
+            random = new Random();
+        }
 
         float hasBoat = random.nextFloat();
         float hasWeapon = random.nextFloat();
         float hasPotion = random.nextFloat();
+        float hasMonster = random.nextFloat();
 
         float weaponType = random.nextFloat();
         float potionType = random.nextFloat();
+        float monsterTier = random.nextFloat();
 
         if(terrain.equals(Terrain.SAND)){
+            Utilities.debug("#terrain sand");
             if (hasBoat <= 0.1f) entities.add(Misc.BOAT);
         }
 
         // Check for land
         if(!terrain.equals(Terrain.WATER)){
 
+            Utilities.debug("#(" + x + ", " + y + ")");
             Utilities.debug("#not water");
 
-            // Place Weapon
+            /*  WEAPON  */
             if (hasWeapon <= 0.05f){
 
                 Utilities.debug("   #has weapon");
@@ -183,7 +194,7 @@ public class MapGenerator {
 
             }
 
-            // Place Potion
+            /*  POTION  */
             if (hasPotion <= 0.10f){ // Todo: Increase as more potions are added
 
                 Utilities.debug("   #has potion");
@@ -197,6 +208,31 @@ public class MapGenerator {
                     Utilities.debug("       #strength potion");
                     entities.add(Potion.SRENGTH_POTION);
                 }
+
+            }
+
+            /*  MONSTER */
+            if (hasMonster <= 0.1f){
+
+                Utilities.debug("   #has monster");
+
+                Monster monster;
+
+                // Calculate Tier
+                if (monsterTier >= 0.5) {
+                    Utilities.debug("       #tier 1");
+                    monster = new Monster(Monster.MonsterType.TIER_1);
+                }
+                else if (monsterTier >= 0.8) {
+                    Utilities.debug("       #tier 2");
+                    monster = new Monster(Monster.MonsterType.TIER_2);
+                }
+                else {
+                    Utilities.debug(        "#tier 3");
+                    monster = new Monster(Monster.MonsterType.TIER_3);
+                }
+
+                entities.add(monster);
 
             }
         }
