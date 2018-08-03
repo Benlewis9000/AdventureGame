@@ -105,7 +105,6 @@ public class EventHandler {
                         else {
                             System.out.println("Boats my be used to travel across water.");
                             inv.addItem(Misc.BOAT);
-                            player.getCell().getEntities().remove(Misc.BOAT);
                             return true;
                         }
                         break;
