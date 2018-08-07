@@ -8,8 +8,6 @@ import java.util.*;
 
 public class MapGenerator {
 
-    // TODO: Make static?
-
     private int x_Spawn;
     private int y_Spawn;
     private int seed;
@@ -143,7 +141,7 @@ public class MapGenerator {
 
         // Declare Random, assign to seeded or unseed Random() depending on Settings
         Random random;
-        if (Main.seedEntities) {
+        if (Main.SEED_ENTITIES) {
             random = new Random(randomiser);
         } else {
             random = new Random();

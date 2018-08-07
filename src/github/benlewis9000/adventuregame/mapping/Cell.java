@@ -17,6 +17,7 @@ public class Cell {
 
     Terrain terrain;
     HashSet<Entity> entities;
+    boolean visible = false;
 
     public Terrain getTerrain() {
         return terrain;
@@ -34,4 +35,11 @@ public class Cell {
         this.entities = entities;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

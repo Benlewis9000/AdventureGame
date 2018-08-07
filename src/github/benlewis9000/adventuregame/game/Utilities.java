@@ -49,23 +49,30 @@ public class Utilities {
         }
     }
 
+    // Take Player yes/no input and return as boolean (query a yes/no question)
     public static boolean query() {
 
         Scanner scanner = new Scanner(System.in);
-
-        // Todo: Redo with a .toLowerCase() and switch statement
 
         while (true) {
 
             char[] chars = scanner.nextLine().toCharArray();
             if (chars.length != 1) {
                 System.out.println("Please enter either \"Y\" for yes, or \"N\" for no.");
+                continue;
             }
-            else if (chars[0] != 'Y' && chars[0] != 'N' && chars[0] != 'y' && chars[0] != 'n'){
-                System.out.println("Please enter either \"Y\" for yes, or \"N\" for no.");
+
+            String answer = String.valueOf(chars[0]).toLowerCase();
+
+            switch (answer){
+                case "y":
+                    return true;
+                case "n":
+                    return false;
+                default:
+                    System.out.println("Please enter either \"Y\" for yes, or \"N\" for no.");
+                    break;
             }
-            else if (chars[0] == 'Y' || chars[0] == 'y') return true;
-            else return false;
 
         }
 

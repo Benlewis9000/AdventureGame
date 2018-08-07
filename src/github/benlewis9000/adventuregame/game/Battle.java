@@ -66,7 +66,7 @@ public class Battle {
         int roundNumber = 0;
 
         // Enter battle loop
-        while (running){
+        while (isRunning()){
 
             // Run through BattleCommands, if none, run through Commands
             while(true) {
@@ -167,10 +167,12 @@ public class Battle {
             }
             ranSpeed = random.nextFloat();
         }
-        System.out.print("You swing your sword...");
-        delay(500);
-        System.out.println(" too slow!");
-
+        // else,
+        if ( !(ranSpeed <= attackSpeed) ) {
+            System.out.print("You swing your " + weapon.getName().toLowerCase() + "...");
+            delay(500);
+            System.out.println(" too slow!");
+        }
     }
 
     public void monsterAttack() {

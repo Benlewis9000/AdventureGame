@@ -100,10 +100,6 @@ public class Monster implements Entity {
 
     public Monster(MonsterType type){
 
-        //setTier(tier);
-
-        // Todo: take type, randomise values (10%), & create Monster with
-
         Random random = new Random();
 
         this.setName(type.name + " Monster");
@@ -155,7 +151,7 @@ public class Monster implements Entity {
 
     public void generateMonster (int maxHealth, int health, int dmg){
 
-        // Todo: Randomised custom variables to make each Monster unique
+        // Todo: Randomised custom variables to make each Monster unique (i.e. name, attack style)
 
     }
 

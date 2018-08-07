@@ -87,11 +87,24 @@ public class Map {
 
     public void printMap(){
 
+        //      TESTING for visible/nonvisibile cells      //
+        /*
+        for (int y = 0; y < this.y_length; y++) {
+            for (int x = 0; x < this.x_length; x++) {
+
+                if (cells[y][x].isVisible()) System.out.print("0");
+                else System.out.print("1");
+            }
+            System.out.println();
+        }
+        */
+
+
         // Iterate through each cell
         for (int y = 0; y < this.y_length; y++){
             for (int x = 0; x < this.x_length; x++){
 
-                char out = 'x';
+                char out = '?';
 
                 Terrain terrain = cells[y][x].getTerrain();
 
@@ -125,17 +138,20 @@ public class Map {
                         break;
                 }
 
-                // Override terrain with player icon - Todo: Apply to all units(?)
-                Player p;
 
                 // Iterate through entities
                 for (Entity entity : cells[y][x].getEntities()){
                     if (entity instanceof Player){
+                        // Print either dead or alive Player
                         out = (((Player) entity).getState() == PlayerState.DEAD) ? 'X' : 'O';
                     }
                 }
 
-                System.out.print(out + " ");
+                // Check cell is vivible (has been explored), else don't render
+                if ( !cells[y][x].isVisible() ) {
+                    System.out.print("  ");
+                }
+                else System.out.print(out + " ");
             }
 
             System.out.println();

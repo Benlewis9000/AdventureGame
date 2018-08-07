@@ -7,36 +7,10 @@ import github.benlewis9000.adventuregame.player.PlayerState;
 
 public class CommandHandler {
 
-    public CommandHandler(String command) { }
-
-    // Todo: Multiple constructors needed?
-
-    // Static method that will handle no arg commands
-   /* public static void onCommand(Player player, String args){
-
-        switch (args) {
-
-            case "inventory":
-                System.out.println("What would you like do? (Type the desired command as showed)\n" +
-                        "\"inventory view\"\n" +
-                        "- View items in your inventory");
-                break;
-
-            case "help":
-                System.out.println("Todo...");
-                break;
-
-            default:
-                System.out.println("Sorry, that command doesn't exist! Type \"help\" for a list of commands");
-                break;
-
-        }
-
-    }*/
-
-    // ...handles 1 arg commands
+    // Takes String input as String[] args
     public static void onCommand(Player player, String[] args){
 
+        // To determine what commands Player has perms to execute
         PlayerState state = player.getState();
 
         // Take first arg
@@ -145,6 +119,31 @@ public class CommandHandler {
 
                 break;
 
+            case "debug":
+
+                 if (args.length == 1){
+                     System.out.println("Please state whether to set debug to true or false.");
+                     break;
+                 }
+                 else switch (args[1]){
+
+                     case "true":
+                         Main.debug = true;
+                         System.out.println("Debug mode has been enabled.");
+                         break;
+
+                     case "false":
+                         Main.debug = false;
+                         System.out.println("Debug mode has been disabled.");
+                         break;
+
+                     default:
+                             System.out.println("\"" + args[1] + "\" was not recognised as true or false. Please try again.");
+                             break;
+
+                 }
+                 break;
+
             case "help":
                 System.out.println("Type the command and necessary args as stated below:" +
                         "\n    W/A/S/D:" +
@@ -178,8 +177,7 @@ public class CommandHandler {
 
             // Todo...
             /*
-                    inventory view
-                    inventory equip (weapon)
+
                     inventory use (consumable e.g. food/potion)
                     run (exits)
 
@@ -189,6 +187,7 @@ public class CommandHandler {
 
     }
 
+    // Todo: move to Util?
     private static void printInventory(String[][] contents) {
 
         System.out.println("Inventory:");

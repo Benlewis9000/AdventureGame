@@ -37,6 +37,7 @@ public class Game {
         this.setMap(player.getMap());
 
         this.runGame();
+
     }
 
 
@@ -55,26 +56,6 @@ public class Game {
             String input = scanner.nextLine();
 
             CommandHandler.onCommand(getPlayer(), Utilities.stringToArgs(input));
-
-            /* Todo: Move to CommandHandler
-            switch (input){
-                case "w":
-                    player.walk(Direction.NORTH);
-                    break;
-                case "a":
-                    player.walk(Direction.WEST);
-                    break;
-                case "s":
-                    player.walk(Direction.SOUTH);
-                    break;
-                case "d":
-                    player.walk(Direction.EAST);
-                    break;
-                case "map":
-                    map.printMap();
-
-            }
-            */
 
         }
 

@@ -2,6 +2,7 @@ package github.benlewis9000.adventuregame.player;
 
 import github.benlewis9000.adventuregame.entity.*;
 import github.benlewis9000.adventuregame.game.EventHandler;
+import github.benlewis9000.adventuregame.game.Utilities;
 import github.benlewis9000.adventuregame.mapping.Direction;
 import github.benlewis9000.adventuregame.game.Inventory;
 import github.benlewis9000.adventuregame.mapping.Cell;
@@ -24,6 +25,7 @@ public class Player implements Entity {
     int y_index;
     int previousX_index;
     int previousY_index;
+    int renderDistance;
 
     int x_cords; // Location in relation to fake origin
     int y_cords;
@@ -100,6 +102,14 @@ public class Player implements Entity {
         this.previousY_index = previousY_index;
     }
 
+    public int getRenderDistance() {
+        return renderDistance;
+    }
+
+    public void setRenderDistance(int renderDistance) {
+        this.renderDistance = renderDistance;
+    }
+
     public int getX_cords() {
         return x_cords;
     }
@@ -132,9 +142,15 @@ public class Player implements Entity {
         this.state = state;
     }
 
-    // Todo: Health, (inv), Item equipped, armor (head/torso/legs/feet)?
-    // Todo: Place player in center of map, allow for player movement (seperate move mechanic/methods)
+    //  Todo: armor (head/torso/legs/feet)?
 
+    /*   TEST PLAYER CONSTRUCTOR     */
+    ////   DO NOT USE!   ////
+    public Player(){
+        this.setMaxHealth(100);
+        this.setHealth(this.getMaxHealth());
+    }
+    ////////////////////////
 
     public Player (Map map) {
 
@@ -160,6 +176,9 @@ public class Player implements Entity {
 
         // Add Player entity to Cell at spawn indexes
         cells[map.getY_Spawn()][map.getX_Spawn()].getEntities().add(this);
+
+        this.setRenderDistance(5);
+        renderCells(getRenderDistance());
 
         this.setWeapon(Weapon.FIST);
         this.setState(PlayerState.ROAMING);
@@ -194,21 +213,6 @@ public class Player implements Entity {
                 }
                 break;
         }
-
-        /*
-
-            switch (direction)
-            case: N, S, E, W etc
-
-            check Unit in direction,
-                if null, cancel,
-                if unit (to do) trigger unit even (util?) - convert units to an arraylist
-            then move,
-                shift index,
-                shift coord,
-                update map/cells(?) etc.
-
-         */
     }
 
     private boolean canMove(int x, int y) {
@@ -270,7 +274,11 @@ public class Player implements Entity {
             }
         }
 
+        // Add Player entity to new cell
         cells[getY_index()][getX_index()].getEntities().add(this);
+
+        // Render new cells
+        renderCells(getRenderDistance());
 
     }
 
@@ -296,9 +304,51 @@ public class Player implements Entity {
 
         cells[getY_index()][getX_index()].getEntities().add(this);
 
+        renderCells(getRenderDistance());
+
         System.out.println("You have moved to (" + getX_cords() + ", " + getY_cords() + ").");
 
 
+    }
+
+    public void renderCells(int radius){
+
+        Utilities.debug("#rendering...");
+
+        /*
+                pi * r^2 = area
+         */
+
+        // Start and end point of sqaure based iteration
+        int startX = getX_index() - radius;
+        int endX = getX_index() + radius;
+        int startY = getY_index() - radius;
+        int endY = getY_index() + radius;
+
+        // Make sure iteration does not spill outside map
+        if (startX < 0) startX = 0;
+        if (endX > getMap().getX_length()) endX = getMap().getX_length();
+
+        if (startY < 0) startY = 0;
+        if (endY > getMap().getY_length()) endY = getMap().getY_length();
+
+        // Iterate over decreased area
+        for (int y = startY; y < endY; y++){
+            for (int x = startX; x < endX; x++){
+
+                Utilities.debug("#  loop");
+
+                // Find hypotenuse between origin and reference point
+                double hyp = (double) Math.sqrt( Math.pow( (getY_index() - y), 2.0) + Math.pow( (getX_index() - x), 2.0) );
+
+                // If hyp is greater than radius, Cell is within circle, therefore isVisible(true);
+                if (hyp < radius){
+                    Utilities.debug("#  (" + x + ", " + y + ") rendered" );
+                    getMap().getCells()[y][x].setVisible(true);
+                }
+
+            }
+        }
     }
 
     public void damage(int dmg){
