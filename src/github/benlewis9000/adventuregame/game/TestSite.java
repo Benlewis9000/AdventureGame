@@ -1,5 +1,6 @@
 package github.benlewis9000.adventuregame.game;
 
+import github.benlewis9000.adventuregame.entity.Entity;
 import github.benlewis9000.adventuregame.entity.Monster;
 import github.benlewis9000.adventuregame.entity.Weapon;
 import github.benlewis9000.adventuregame.player.Player;
@@ -15,6 +16,35 @@ public class TestSite {
         This class holds static methods that run various tests, which can then
         be called in the main class when testing=true.
      */
+
+    public static void main(String[] args){
+
+
+
+    }
+
+    public static void testBossQuantity(){
+
+        Random random = new Random();
+
+        int target = 0;
+        int other = 0;
+
+        for (int i = 0; i < 1000; i++) {
+
+            float ran = random.nextFloat();
+
+            int land = (int) Math.round(Main.BOSSES * ran);
+            int island = (int) Math.round(Main.BOSSES * (1-ran));
+
+            if (land + island == Main.BOSSES) target++;
+            else other++;
+
+        }
+
+        System.out.println("Target: " + target + "\nOther: " + other);
+
+    }
 
     public static void testWeapon(Weapon weapon){
 
@@ -58,7 +88,7 @@ public class TestSite {
 
         }
 
-        System.out.println(weapon.getName() + ":" +
+        System.out.println(weapon.getId() + ":" +
                 "\n    Total damage: " + totalDmg +
                 "\n    Total swings: " + totalSwings +
                 "\n    Total hits: " + totalHit +
@@ -81,6 +111,13 @@ public class TestSite {
 
         new Battle(player, monster);
 
+    }
+
+    public static void listCellEntities(Player player, int x, int y){
+        System.out.println("\nEntities (" + x + ", " + y + "):");
+        for (Entity entity : player.getMap().getCells()[y][x].getEntities()) {
+            System.out.println(entity.getId());
+        }
     }
 
 }

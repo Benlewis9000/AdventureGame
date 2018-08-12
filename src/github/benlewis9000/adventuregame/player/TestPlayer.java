@@ -13,7 +13,7 @@ public class TestPlayer {
 
     public class Player implements Entity {
 
-        private String name = "Player";
+        private String id = "Test Player";
         Inventory inventory;
 
         int maxHealth;
@@ -23,7 +23,7 @@ public class TestPlayer {
         PlayerState state;
 
 
-        public String getName() { return name; }
+        public String getId() { return id; }
 
         public Inventory getInventory() {
             return inventory;

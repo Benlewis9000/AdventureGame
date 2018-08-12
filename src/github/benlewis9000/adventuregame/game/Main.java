@@ -18,76 +18,42 @@ public class Main {
             - Implement Armour
             - Implement upgradeable Weapons
             - Improve monster generation
-            - Implement Boss mobs and Portal/puzzle pieces
+            - Implement Boss mobs (DONE) and Portal/puzzle pieces
             - Implement enchants(?) & weaknesses(?)
                 - Pillars/shrines on map to enable
-            - Only render cells explored (in radius)
+            - Only render cells explored (in radius)        - DONE
+            - Clear cell player spawns in? Add portalBase/wizrd etc.
+            - Add shops across map?
      */
 
     /*  Settings    */
-    // Todo: Have settings saved and loaded from file
+    // Todo: Have settings saved and loaded from file, have debug printed to file
     public static boolean debug = false;  // Prints debug messages
     public static final boolean SEED_ENTITIES = true;  // Spawns entities in same place based on seed
-    public static final boolean TESTING = false;
+    // public static final boolean TESTING = false;     - Todo: Remove, all testing in TestSite main method
+    public static final boolean TITLE_SEQUENCE = true;
+    public static final int BOSSES = 7;
 
     public static void main(String[] args) {
 
-        System.out.println("Program running...");
-
-        /*   TESTING SITE!   */
-
-        if (TESTING) {
+        System.out.println("Main game running...\n");
 
 
-            for (Weapon weapon : Weapon.values()) {
-                TestSite.testWeapon(weapon);
-            }
+        // Generate map
+        MapGenerator mapGenerator = new MapGenerator();
+        Map map = mapGenerator.generateMap(70, 40); //Todo - generateMap args to belong to MapGenerator?
 
-            //TestSite.forceBattle(Weapon.SWORD, Monster.MonsterType.TIER_2);
+        System.out.println("Seed: " + map.getSeed());
 
+        // Create Player (assigned to Map, and placed on Map)
+        Player player = new Player(map, 50);
 
-        }
+        //System.out.println("Index: (" + player.getX_index() + ", " + player.getY_index() + ")");
+        System.out.println("Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
 
-
-        /*   MAIN GAME      */
-        else {
-
-            // Generate map
-            MapGenerator mapGenerator = new MapGenerator();
-            Map map = mapGenerator.generateMap(70, 40);
-            System.out.println("Seed: " + map.getSeed() + "\n");
-
-            // Create Player (assigned to Map, and placed on Map)
-            Player player = new Player(map);
-
-            System.out.println(
-                    "Index: (" + player.getX_index() + ", " + player.getY_index() + ")\n"
-                            + "Cords: (" + player.getX_cords() + ", " + player.getY_cords() + ")");
-
-            //player.getMap().printMap();
-
-            // CME cell:
-            System.out.println("\nEntities:");
-            for (Entity entity : player.getMap().getCells()[11][12].getEntities()){
-                System.out.println(entity.getName());
-            }
-
-            player.setWeapon(Weapon.BATTLE_AXE);
-            player.setHealth(5);
-
-            Game game = new Game(player);
-            game.runGame();
-
-        }
+        Game game = new Game(player);
+        game.runGame();
 
     }
 
 }
-
-/*
-        Movement:
-            - boolean canMove(), check adjacent cell in direction of movement
-            - ^if true, move(), deleting player Unit from previous cell and adding to new one(?),
-                also check for current unit
-                Should moving be done by fake coords and indexes? a player unit isn't needed?
- */

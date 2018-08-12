@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 public class Player implements Entity {
 
-    private String name = "Player";
+    private String id = "Player";
     Map map;
     Inventory inventory;
 
@@ -36,7 +36,7 @@ public class Player implements Entity {
     PlayerState state;
 
 
-    public String getName() { return name; }
+    public String getId() { return id; }
 
     public Map getMap() {
         return map;
@@ -152,12 +152,12 @@ public class Player implements Entity {
     }
     ////////////////////////
 
-    public Player (Map map) {
+    public Player (Map map, int maxHealth) {
 
         // Set map to given Map
         this.setMap(map);
 
-        this.setMaxHealth(100);
+        this.setMaxHealth(maxHealth);
         this.setHealth(getMaxHealth());
 
         // Create and set Inventory
@@ -317,6 +317,8 @@ public class Player implements Entity {
 
         /*
                 pi * r^2 = area
+
+                a^2 + b^2 = c^2
          */
 
         // Start and end point of sqaure based iteration
@@ -332,14 +334,14 @@ public class Player implements Entity {
         if (startY < 0) startY = 0;
         if (endY > getMap().getY_length()) endY = getMap().getY_length();
 
-        // Iterate over decreased area
-        for (int y = startY; y < endY; y++){
-            for (int x = startX; x < endX; x++){
+        // Iterate over decreased area (d^2)
+        for (int y = startY; y <= endY; y++){
+            for (int x = startX; x <= endX; x++){
 
                 Utilities.debug("#  loop");
 
                 // Find hypotenuse between origin and reference point
-                double hyp = (double) Math.sqrt( Math.pow( (getY_index() - y), 2.0) + Math.pow( (getX_index() - x), 2.0) );
+                double hyp = Math.sqrt( Math.pow( (getY_index() - y), 2.0) + Math.pow( (getX_index() - x), 2.0) );
 
                 // If hyp is greater than radius, Cell is within circle, therefore isVisible(true);
                 if (hyp < radius){

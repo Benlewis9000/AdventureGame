@@ -12,14 +12,16 @@ public class Monster implements Entity {
 
         TIER_1 ("Tier 1", 10, 5),
         TIER_2 ("Tier 2", 25, 10),
-        TIER_3 ("Tier 3", 50, 15);
+        TIER_3 ("Tier 3", 50, 15),
+        BOSS_LAND ("Boss", 100, 25),
+        BOSS_ISLAND (" Island Boss", 200, 50);
 
-        String name;
+        String id;
         int maxHealth;
         int dmg;
 
-        MonsterType(String name, int maxHealth, int dmg){
-            this.name = name;
+        MonsterType(String id, int maxHealth, int dmg){
+            this.id = id;
             this.maxHealth = maxHealth;
             this.dmg = dmg;
         }
@@ -27,7 +29,8 @@ public class Monster implements Entity {
     }
 
     // Health, attack strength, accuracy, ArrayList of drops
-    String name;
+    String id;
+    MonsterType monsterType;
     int maxHealth;
     int health;
     int dmg;
@@ -35,12 +38,12 @@ public class Monster implements Entity {
     ArrayList<Resource> drops;
 
     @Override
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getMaxHealth() {
@@ -102,7 +105,7 @@ public class Monster implements Entity {
 
         Random random = new Random();
 
-        this.setName(type.name + " Monster");
+        this.setId(type.id + " Monster");
         // Randomise macHealth (thus health) by +-20%
         this.setMaxHealth(
                 Math.round((float) type.maxHealth * (1.0f + ((float) random.nextInt(400)/1000) - 0.2f ))

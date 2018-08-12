@@ -5,16 +5,16 @@ public enum Resource implements Item {
     WOOD ("Wood", "Used as a crafting component."),
     IRON ("Iron", "Used as a crafting component.");
 
-    String name;
+    String id;
     String desc;
 
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDesc() {
@@ -26,8 +26,8 @@ public enum Resource implements Item {
     }
 
 
-    Resource (String name, String desc){
-        this.setName(name);
+    Resource (String id, String desc){
+        this.setId(id);
         this.setDesc(desc);
     }
 
@@ -36,7 +36,7 @@ public enum Resource implements Item {
     public String[] getInfo() {
 
         String[] info = new String[2];
-        info[0] = name;
+        info[0] = id;
         info[1] = desc;
 
         return info;

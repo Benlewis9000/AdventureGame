@@ -11,19 +11,19 @@ public enum Weapon implements Item {
     WAR_HAMMER("War Hammer", "Deal untold damage, if you can handle it...", 30, 0.6f, 0.7f);
 
 
-    String name;
+    String id;
     String desc;
     int damage; // Base damage (later run through +-20% modifier)
     float speed; // percentage (decimal) that they will hit per swing - fail means too slow, thus monster strikes
     float accuracy; // percentage (decimal) that a fast enough swing will collide with monster - fail means swing is attempted again
 
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -59,8 +59,8 @@ public enum Weapon implements Item {
     }
 
 
-    Weapon (String name, String desc, int damage, float speed, float accuracy){
-        this.setName(name);
+    Weapon (String id, String desc, int damage, float speed, float accuracy){
+        this.setId(id);
         this.setDescription(desc);
         this.setDamage(damage);
         this.setSpeed(speed);
@@ -71,7 +71,7 @@ public enum Weapon implements Item {
     public String[] getInfo() {
 
         String[] info = new String[5];
-        info[0] = name;
+        info[0] = id;
         info[1] = desc;
         info[2] = "Damage: " + damage;
         info[3] = "Speed: " + speed;

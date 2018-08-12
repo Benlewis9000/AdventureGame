@@ -2,17 +2,18 @@ package github.benlewis9000.adventuregame.entity;
 
 public enum Misc implements Item{
 
-    BOAT                ("Boat", "Use a boat to travel across water.");
+    BOAT                ("Boat", "Use a boat to travel across water."),
+    PORTAL_PIECE        ("Portal Piece", "Collect all ");
 
-    String name;
+    String id;
     String desc;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDesc() {
@@ -23,8 +24,8 @@ public enum Misc implements Item{
         this.desc = desc;
     }
 
-    Misc(String name, String desc){
-        this.setName(name);
+    Misc(String id, String desc){
+        this.setId(id);
         this.setDesc(desc);
     }
 
@@ -32,7 +33,7 @@ public enum Misc implements Item{
     public String[] getInfo() {
 
         String[] info = new String[2];
-        info[0] = name;
+        info[0] = id;
         info[1] = desc;
 
         return info;

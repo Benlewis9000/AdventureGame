@@ -3,18 +3,18 @@ package github.benlewis9000.adventuregame.entity;
 public enum Potion implements Item{
 
     HEALTH_POTION    ("Health Potion", "Consume to replenish your health.", 10f),
-    SRENGTH_POTION ("Strength Potion", "Consume to temporarily increase the strength of your attacks", 1.5f);
+    STRENGTH_POTION ("Strength Potion", "Consume to temporarily increase the strength of your attacks", 1.5f);
 
-    String name;
+    String id;
     String desc;
     float strength;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDesc() {
@@ -33,8 +33,8 @@ public enum Potion implements Item{
         this.strength = strength;
     }
 
-    Potion(String name, String desc, float strength){
-        this.setName(name);
+    Potion(String id, String desc, float strength){
+        this.setId(id);
         this.setDesc(desc);
         this.setStrength(strength);
     }
@@ -43,7 +43,7 @@ public enum Potion implements Item{
     public String[] getInfo() {
 
         String[] info = new String[3];
-        info[0] = name;
+        info[0] = id;
         info[1] = desc;
         info[2] = "Strength: " + strength;
 

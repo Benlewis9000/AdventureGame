@@ -120,9 +120,11 @@ public class EventHandler {
 
         if (entity instanceof Monster){
 
-            System.out.println("You've run into a monster!" +
-                    "\n    Monster Health: " + ((Monster) entity).getHealth() +
-                    "\n    Strength: " + ((Monster) entity).getDmg());
+            Monster monster = (Monster) entity;
+
+            System.out.println("You've run into a " + monster.getId() + " Monster!" +
+                    "\n    Monster Health: " + monster.getHealth() +
+                    "\n    Strength: " + monster.getDmg());
 
 
             System.out.println("Would you like to engage the monster, or retreat to your previous position? (\"Y\"/\"N\")");

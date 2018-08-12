@@ -131,7 +131,7 @@ public class Battle {
 
             delay(200);
 
-            System.out.println("You swing your " + weapon.getName().toLowerCase() + "...");
+            System.out.println("You swing your " + weapon.getId().toLowerCase() + "...");
             delay (500);
 
             float ranAccuracy = random.nextFloat();
@@ -169,7 +169,7 @@ public class Battle {
         }
         // else,
         if ( !(ranSpeed <= attackSpeed) ) {
-            System.out.print("You swing your " + weapon.getName().toLowerCase() + "...");
+            System.out.print("You swing your " + weapon.getId().toLowerCase() + "...");
             delay(500);
             System.out.println(" too slow!");
         }

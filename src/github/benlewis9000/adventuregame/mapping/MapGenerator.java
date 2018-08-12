@@ -12,7 +12,17 @@ public class MapGenerator {
     private int y_Spawn;
     private int seed;
     private double shortestDistance = -1.0;
+    private ArrayList<Integer> islandXCords = new ArrayList<>();
+    private ArrayList<Integer> islandYCords = new ArrayList<>();
 
+
+    /*
+
+        Todo: Optimise BOSS mob placement;
+            Add all Island terrain cords to a collection, allows for quicker
+            selecting of random spawn points for Island Boss
+
+     */
 
 
     public int getX_Spawn() {
@@ -37,6 +47,30 @@ public class MapGenerator {
 
     public void setSeed(int seed) {
         this.seed = seed;
+    }
+
+    public double getShortestDistance() {
+        return shortestDistance;
+    }
+
+    public void setShortestDistance(double shortestDistance) {
+        this.shortestDistance = shortestDistance;
+    }
+
+    public ArrayList<Integer> getIslandXCords() {
+        return islandXCords;
+    }
+
+    public void setIslandXCords(ArrayList<Integer> islandXCords) {
+        this.islandXCords = islandXCords;
+    }
+
+    public ArrayList<Integer> getIslandYCords() {
+        return islandYCords;
+    }
+
+    public void setIslandYCords(ArrayList<Integer> islandYCords) {
+        this.islandYCords = islandYCords;
     }
 
     // RANDOM map
@@ -90,7 +124,7 @@ public class MapGenerator {
 
                 // Generate Terrain for cell (according to noise value)
                 cells[y][x].setTerrain(generateTerrain(x, y, seed));
-                cells[y][x].setEntities(generateEntities(cells[y][x].getTerrain(), getSeed(), random.nextInt(Integer.MAX_VALUE), x, y));
+                cells[y][x].setEntities(generateEntities(cells[y][x].getTerrain(), random.nextInt(Integer.MAX_VALUE), x, y));
 
                 // Find spawn point
                 double distance = findDistance(x, y, cells[0].length/2 - 1, cells.length/2 - 1);
@@ -102,6 +136,8 @@ public class MapGenerator {
             }
         }
 
+        generateBossMonsters(cells, x_mapSize, y_mapSize, 0.7f, random);
+
         return cells;
     }
 
@@ -112,13 +148,13 @@ public class MapGenerator {
         double noiseValue = Math.abs(SimplexNoise.noise((float) (x) / 16, (float) (y) / 16, seed));  // <- dividing cords enlarges grid - MUST BE A DECIMAL DATATYPE!
 
         // Return Terrain type at cords depending on noise given
-        if (noiseValue <= 0.09){
+        /* if (noiseValue <= 0.09){
             return Terrain.DENSE_FOREST;
         }
         else if (noiseValue <= 0.1){
             return Terrain.LIGHT_FOREST;
         }
-        else if (noiseValue <= 0.5){
+        else */ if (noiseValue <= 0.5){
             return Terrain.GRASS;
         }
         else if (noiseValue <= 0.6){
@@ -131,18 +167,21 @@ public class MapGenerator {
             return Terrain.SAND;
         }
         else {
+            // Add island coords to HashMap for faster island boss spawn location searching
+            islandXCords.add(x);
+            islandYCords.add(y);
             return Terrain.ISLAND;
         }
     }
 
-    public HashSet<Entity> generateEntities (Terrain terrain, int seed, int randomiser, int x, int y){
+    public HashSet<Entity> generateEntities (Terrain terrain, int randomisedSeed, int x, int y){
 
         HashSet<Entity> entities = new HashSet<Entity>();
 
-        // Declare Random, assign to seeded or unseed Random() depending on Settings
+        // Declare Random, assign to seeded or unseeded Random() depending on Settings
         Random random;
         if (Main.SEED_ENTITIES) {
-            random = new Random(randomiser);
+            random = new Random(randomisedSeed);
         } else {
             random = new Random();
         }
@@ -204,7 +243,7 @@ public class MapGenerator {
                 }
                 else if (potionType <= 1.0f){
                     Utilities.debug("       #strength potion");
-                    entities.add(Potion.SRENGTH_POTION);
+                    entities.add(Potion.STRENGTH_POTION);
                 }
 
             }
@@ -238,15 +277,92 @@ public class MapGenerator {
         return entities;
     }
 
+    public void generateBossMonsters(Cell[][] cells, int x_Length, int y_Length, float landToIslandRatio, Random random){
+
+        Utilities.debug("#generate boss monsters");
+
+        int x,y;
+        int i = 0;
+
+        int landQuantity = (int) Math.round(Main.BOSSES * landToIslandRatio);
+        int islandQuantity = (int) Math.round(Main.BOSSES * (1-landToIslandRatio));
+
+        while (i < landQuantity){
+
+            Monster grassBoss = new Monster(Monster.MonsterType.BOSS_LAND);
+
+            x = Math.abs( random.nextInt(x_Length) );
+            y = Math.abs( random.nextInt(y_Length) );
+
+            Utilities.debug("   #attempting GRASS BOSS at (" + x + ", " + y +")");
+
+            if (cells[y][x].getTerrain().equals(Terrain.GRASS)){
+
+                Utilities.debug("   #is GRASS");
+
+                Iterator<Entity> cellIterator = cells[y][x].getEntities().iterator();
+
+                while (cellIterator.hasNext()){
+
+                    if (cellIterator.next() instanceof Monster) {
+
+                        Utilities.debug("#      removing Monster");
+                        cellIterator.remove();
+
+                    }
+
+                }
+
+                cells[y][x].getEntities().add(grassBoss);
+
+                i++;
+            }
+
+        }
+
+        i = 0;
+
+        while (i < islandQuantity){
+
+            Monster islandBoss = new Monster(Monster.MonsterType.BOSS_ISLAND);
+
+            x = getIslandXCords().get( Math.abs( random.nextInt(getIslandXCords().size()) ) );
+            y = getIslandYCords().get( Math.abs( random.nextInt(getIslandYCords().size()) ) );
+
+            Utilities.debug("   #attempting ISLAND BOSS at (" + x + ", " + y +")");
+
+            if (cells[y][x].getTerrain().equals(Terrain.ISLAND)){
+
+                Utilities.debug("   #is ISLAND");
+
+                Iterator<Entity> cellIterator = cells[y][x].getEntities().iterator();
+
+                while (cellIterator.hasNext()){
+
+                    if (cellIterator.next() instanceof Monster) {
+
+                        Utilities.debug("#      removing Monster");
+                        cellIterator.remove();
+
+                    }
+
+                }
+
+                cells[y][x].getEntities().add(islandBoss);
+
+                i++;
+            }
+
+        }
+    }
+
     public double findDistance(int x_Cell, int y_Cell, int x_Center, int y_Center){
 
         // Find the distance between the origin and the queried cell using Pythagoras a^2 + b^2 = c^2
         double distance = Math.sqrt(Math.pow((x_Cell - x_Center), 2) + Math.pow(y_Cell - y_Center, 2)); // Use Math.pow, ^2 is not a function in Java
-        //System.out.println(distance); // DEBUG
+
         return distance;
 
     }
-
-
 
 }

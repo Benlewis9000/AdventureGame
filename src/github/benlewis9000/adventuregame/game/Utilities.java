@@ -1,12 +1,17 @@
 package github.benlewis9000.adventuregame.game;
 
+import github.benlewis9000.adventuregame.entity.Entity;
+import github.benlewis9000.adventuregame.entity.Monster;
+import github.benlewis9000.adventuregame.mapping.Cell;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Utilities {
 
-    public static String[] stringToArgs(String string){
+    public static String[] stringToArgs(String string) {
 
         char[] chars = string.toLowerCase().toCharArray();
 
@@ -16,35 +21,34 @@ public class Utilities {
 
         boolean endSpace = false;
 
-        for (char c : chars){
-            if (c == ' '){
+        for (char c : chars) {
+            if (c == ' ') {
                 endSpace = true;
                 argsList.add(stringBuffer);
                 stringBuffer = "";
-            }
-            else {
+            } else {
                 endSpace = false;
                 stringBuffer = stringBuffer + Character.toString(c);
             }
         }
 
-        if (!endSpace){
+        if (!endSpace) {
             argsList.add(stringBuffer);
         }
 
         String[] args = new String[argsList.size()];
 
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
 
-             args[i] = (String) argsList.toArray()[i];
+            args[i] = (String) argsList.toArray()[i];
 
         }
 
         return args;
     }
 
-    public static void debug(String string){
-        if (Main.debug){
+    public static void debug(String string) {
+        if (Main.debug) {
             System.out.println(string);
         }
     }
@@ -64,7 +68,7 @@ public class Utilities {
 
             String answer = String.valueOf(chars[0]).toLowerCase();
 
-            switch (answer){
+            switch (answer) {
                 case "y":
                     return true;
                 case "n":
@@ -79,12 +83,33 @@ public class Utilities {
     }
 
     // Returns random variables of input at +-variance decimal
-    public static int applyVariance (int input, float variance){
+    public static int applyVariance(int input, float variance) {
 
         Random random = new Random();
         return Math.round(Math.abs(input * (1 + (random.nextInt(Math.round(variance * 1000 * 2)) / 1000.0f - variance))));
 
     }
+
+    /*
+    public static void removeEntities(Cell cell, Entity entity) {
+
+        Iterator<Entity> cellIterator = cell.getEntities().iterator();
+
+        while(cellIterator.hasNext())
+
+        {
+
+            if (cellIterator.next() instanceof ..? ) {      // instanceof entitity.getType
+
+                Utilities.debug("#      removing " + entity.getId());
+                cellIterator.remove();
+
+            }
+
+        }
+
+    }
+    */
 
     // Delay by x milliseconds
     public static void delay(int milliseconds){
@@ -98,6 +123,16 @@ public class Utilities {
             System.out.println(e.getMessage());
 
         }
+    }
+
+    public static void pause(){
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\n(Press ENTER to continue...)");
+
+        scanner.nextLine();
+
     }
 
 }
